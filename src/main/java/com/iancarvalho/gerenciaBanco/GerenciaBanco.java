@@ -1,8 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-package com.mycompany.gerenciabanco;
+package com.iancarvalho.gerenciaBanco;
 
+import com.iancarvalho.gerenciaBanco.utils.InterfaceUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -18,11 +16,7 @@ public class GerenciaBanco {
 
     public static void main(String[] args) {
         try {
-            System.out.println("#".repeat(100));
-            System.out.println("*".repeat(100));
-            System.out.println("#".repeat(30) + "    Sistema de Controle de Banco    " + "#".repeat(30));
-            System.out.println("*".repeat(100));
-            System.out.println("#".repeat(100));
+            InterfaceUtils.imprimeCabecalho("Sistema de Controle de Banco");
             pedeDadosCliente();
             exibeMenu();
         } catch (Exception err) {
@@ -80,7 +74,9 @@ public class GerenciaBanco {
         do {
             System.out.println("a) Consultar Saldo");
             System.out.println("b) Realizar deposito");
-            System.out.println("c) Realizar retirada");
+            if (conta.getSaldo() > 0) {
+                System.out.println("c) Realizar retirada");
+            }
             System.out.println("d) Sair do programa");
             System.out.print("Digite a opcao desejada: ");
             opcao = scanner.nextLine();
@@ -89,24 +85,19 @@ public class GerenciaBanco {
                 System.out.println("Opcao invalida! Verifique o menu!");
             }
         } while (opcaoInvalida);
-        if ("a".equals(opcao)) {
-            consultarSaldo();
+        switch (opcao) {
+            case "a" -> consultarSaldo();
+            case "b" -> realizarDeposito();
+            case "c" -> realizarRetirada();
+            case "d" -> sair();
+
         }
-        if ("b".equals(opcao)) {
-            realizarDeposito();
-        }
-        if ("d".equals(opcao)) {
-            sair();
-        }
+
     }
 
     public static void consultarSaldo() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("#".repeat(100));
-        System.out.println("*".repeat(100));
-        System.out.println("#".repeat(30) + "    Saldo da Conta de " + cliente.getNome() + "    " + "#".repeat(30));
-        System.out.println("*".repeat(100));
-        System.out.println("#".repeat(100));
+        InterfaceUtils.imprimeCabecalho("Saldo da Conta de " + cliente.getNome());
         System.out.println("O saldo da conta e ");
         System.out.println("R$ " + conta.getSaldo());
         System.out.println("(Pressione qualquer tecla para voltar para o menu...)");
@@ -116,11 +107,7 @@ public class GerenciaBanco {
 
     public static void realizarDeposito() {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("#".repeat(100));
-        System.out.println("*".repeat(100));
-        System.out.println("#".repeat(30) + "    Deposito na Conta de " + cliente.getNome() + "    " + "#".repeat(30));
-        System.out.println("*".repeat(100));
-        System.out.println("#".repeat(100));
+        InterfaceUtils.imprimeCabecalho("Deposito na Conta de " + cliente.getNome());
         System.out.println("(Dica: utilize virgulas para separar decimais)");
         double valorDepositar = 0;
         boolean valorInvalido;
@@ -140,6 +127,36 @@ public class GerenciaBanco {
 
         conta.depositar(valorDepositar);
         System.out.println("Valor de R$ " + valorDepositar + " depositado com sucesso! Novo saldo e de R$ " + conta.getSaldo());
+        exibeMenu();
+    }
+
+    public static void realizarRetirada() {
+        if(conta.getSaldo() < 0){
+            System.out.println("Não pode ser realizada retirada em conta com saldo zerado!");
+            exibeMenu();
+            return;
+        }
+        Scanner scanner = new Scanner(System.in);
+        InterfaceUtils.imprimeCabecalho("Retirada da Conta de " + cliente.getNome());
+        System.out.println("(Dica: utilize virgulas para separar decimais)");
+        double valorRetirar = 0;
+        boolean valorInvalido;
+        do {
+            System.out.print("Digite o valor a ser retirado (Saldo atual: R$ " + conta.getSaldo() + "): ");
+            try {
+                valorRetirar = scanner.nextDouble();
+            } catch (Exception err) {
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                scanner.nextLine();
+            }
+            valorInvalido = valorRetirar <= 0 || valorRetirar > conta.getSaldo();
+            if (valorInvalido) {
+                System.out.println("Valor invalido! Precisa ser maior que zero e menor ou igual ao saldo atual!");
+            }
+        } while (valorInvalido);
+
+        conta.retirar(valorRetirar);
+        System.out.println("Valor de R$ " + valorRetirar + " retirado com sucesso! Novo saldo e de R$ " + conta.getSaldo());
         exibeMenu();
     }
 
