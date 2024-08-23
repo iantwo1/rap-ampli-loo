@@ -18,7 +18,7 @@ public class GerenciaBanco {
         try {
             InterfaceUtils.imprimeCabecalho("Sistema de Controle de Banco");
             pedeDadosCliente();
-            exibeMenu();
+            exibeMenuPrincipal();
         } catch (Exception err) {
             System.out.println(err.getMessage());
         }
@@ -62,7 +62,40 @@ public class GerenciaBanco {
 
     }
 
-    public static void exibeMenu() {
+    public static void exibeMenuPrincipal() {
+        Scanner scanner = new Scanner(System.in);
+        String opcao;
+        boolean opcaoInvalida;
+        List<String> opcoesValidas = new ArrayList<>();
+        opcoesValidas.add("a");
+        opcoesValidas.add("b");
+        opcoesValidas.add("x");
+        do {
+            System.out.println("a) Transacoes Principais");
+            System.out.println("b) Investimentos");
+            System.out.println("x) Sair do programa");
+            System.out.print("Digite a opcao desejada: ");
+            opcao = scanner.nextLine();
+            opcaoInvalida = !opcoesValidas.contains(opcao);
+            if (opcaoInvalida) {
+                System.out.println("Opcao invalida! Verifique o menu!");
+            }
+        } while (opcaoInvalida);
+        switch (opcao) {
+            case "a" ->
+                exibeMenuTransacoesPrincipais();
+            case "b" ->
+                exibeMenuInvestimentos();
+            case "x" ->
+                sair();
+            case "d" ->
+                sair();
+
+        }
+
+    }
+
+    public static void exibeMenuTransacoesPrincipais() {
         Scanner scanner = new Scanner(System.in);
         String opcao;
         boolean opcaoInvalida;
@@ -77,7 +110,7 @@ public class GerenciaBanco {
             if (conta.getSaldo() > 0) {
                 System.out.println("c) Realizar retirada");
             }
-            System.out.println("d) Sair do programa");
+            System.out.println("d) Sair");
             System.out.print("Digite a opcao desejada: ");
             opcao = scanner.nextLine();
             opcaoInvalida = !opcoesValidas.contains(opcao);
@@ -86,10 +119,45 @@ public class GerenciaBanco {
             }
         } while (opcaoInvalida);
         switch (opcao) {
-            case "a" -> consultarSaldo();
-            case "b" -> realizarDeposito();
-            case "c" -> realizarRetirada();
-            case "d" -> sair();
+            case "a" ->
+                consultarSaldo();
+            case "b" ->
+                realizarDeposito();
+            case "c" ->
+                realizarRetirada();
+            case "d" ->
+                exibeMenuPrincipal();
+
+        }
+    }
+
+    public static void exibeMenuInvestimentos() {
+        Scanner scanner = new Scanner(System.in);
+        String opcao;
+        boolean opcaoInvalida;
+        List<String> opcoesValidas = new ArrayList<>();
+        opcoesValidas.add("a");
+        opcoesValidas.add("b");
+        opcoesValidas.add("c");
+        InterfaceUtils.imprimeCabecalho("Simulador de investimentos");
+        do {
+            System.out.println("a) CDB (10% ao ano)");
+            System.out.println("b) LCI (8% ao ano)");
+            System.out.println("c) Sair");
+            System.out.print("Digite a opcao desejada: ");
+            opcao = scanner.nextLine();
+            opcaoInvalida = !opcoesValidas.contains(opcao);
+            if (opcaoInvalida) {
+                System.out.println("Opcao invalida! Verifique o menu!");
+            }
+        } while (opcaoInvalida);
+        switch (opcao) {
+            case "a" ->
+                simularCDB();
+            case "b" ->
+                simularLCI();
+            case "c" ->
+                exibeMenuPrincipal();
 
         }
 
@@ -102,7 +170,7 @@ public class GerenciaBanco {
         System.out.println("R$ " + conta.getSaldo());
         System.out.println("(Pressione qualquer tecla para voltar para o menu...)");
         scanner.nextLine();
-        exibeMenu();
+        exibeMenuTransacoesPrincipais();
     }
 
     public static void realizarDeposito() {
@@ -127,13 +195,13 @@ public class GerenciaBanco {
 
         conta.depositar(valorDepositar);
         System.out.println("Valor de R$ " + valorDepositar + " depositado com sucesso! Novo saldo e de R$ " + conta.getSaldo());
-        exibeMenu();
+        exibeMenuTransacoesPrincipais();
     }
 
     public static void realizarRetirada() {
-        if(conta.getSaldo() < 0){
+        if (conta.getSaldo() < 0) {
             System.out.println("Não pode ser realizada retirada em conta com saldo zerado!");
-            exibeMenu();
+            exibeMenuTransacoesPrincipais();
             return;
         }
         Scanner scanner = new Scanner(System.in);
@@ -157,7 +225,97 @@ public class GerenciaBanco {
 
         conta.retirar(valorRetirar);
         System.out.println("Valor de R$ " + valorRetirar + " retirado com sucesso! Novo saldo e de R$ " + conta.getSaldo());
-        exibeMenu();
+        exibeMenuTransacoesPrincipais();
+    }
+
+    public static void simularCDB() {
+        Scanner scanner = new Scanner(System.in);
+        InterfaceUtils.imprimeCabecalho("Simulador de investimento em CDB (10% ao ano)");
+        System.out.println("(Dica: utilize virgulas para separar decimais)");
+        double valorInvestir = 0;
+        int quantidadeMeses = 0;
+        boolean valorInvalido;
+        do {
+            System.out.print("Digite o valor a ser investido: ");
+            try {
+                valorInvestir = scanner.nextDouble();
+            } catch (Exception err) {
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                scanner.nextLine();
+                break;
+            }
+            System.out.print("Digite a quantidade de meses: ");
+            try {
+                quantidadeMeses = scanner.nextInt();
+            } catch (Exception err) {
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (valor inteiro sem decimais)!");
+                scanner.nextLine();
+                break;
+            }
+            valorInvalido = valorInvestir <= 0 || quantidadeMeses <= 0;
+            if (valorInvalido) {
+                System.out.println("Valores invalidos! Precisam ser maiores que zero!");
+            }
+        } while (valorInvalido);
+
+        double valorAcumulado = AplicacaoBancaria.calcularCDB(valorInvestir, quantidadeMeses);
+        InterfaceUtils.imprimeLinhaSeparadora();
+        InterfaceUtils.imprimeLinhaSeparadora();
+        System.out.println("Que otimo! Ja temos um resultado para sua simulação!");
+        System.out.println("Valor a investir: R$" + valorInvestir);
+        System.out.println("Quantidade de meses: " + quantidadeMeses);
+        System.out.println("Juros: 10% ao ano");
+        System.out.println("Resultado acumulado: R$" + valorAcumulado);
+        InterfaceUtils.imprimeLinhaSeparadora();
+        InterfaceUtils.imprimeLinhaSeparadora();
+        System.out.println("(Pressione qualquer tecla para voltar para o menu...)");
+        scanner.nextLine();
+        exibeMenuInvestimentos();
+    }
+
+    public static void simularLCI() {
+        Scanner scanner = new Scanner(System.in);
+        InterfaceUtils.imprimeCabecalho("Simulador de investimento em LCI (8% ao ano)");
+        System.out.println("(Dica: utilize virgulas para separar decimais)");
+        double valorInvestir = 0;
+        int quantidadeMeses = 0;
+        boolean valorInvalido;
+        do {
+            System.out.print("Digite o valor a ser investido: ");
+            try {
+                valorInvestir = scanner.nextDouble();
+            } catch (Exception err) {
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                scanner.nextLine();
+                break;
+            }
+            System.out.print("Digite a quantidade de meses: ");
+            try {
+                quantidadeMeses = scanner.nextInt();
+            } catch (Exception err) {
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (valor inteiro sem decimais)!");
+                scanner.nextLine();
+                break;
+            }
+            valorInvalido = valorInvestir <= 0 || quantidadeMeses <= 0;
+            if (valorInvalido) {
+                System.out.println("Valores invalidos! Precisam ser maiores que zero!");
+            }
+        } while (valorInvalido);
+
+        double valorAcumulado = AplicacaoBancaria.calcularLCI(valorInvestir, quantidadeMeses);
+        InterfaceUtils.imprimeLinhaSeparadora();
+        InterfaceUtils.imprimeLinhaSeparadora();
+        System.out.println("Que otimo! Ja temos um resultado para sua simulação!");
+        System.out.println("Valor a investir: R$" + valorInvestir);
+        System.out.println("Quantidade de meses: " + quantidadeMeses);
+        System.out.println("Juros: 8% ao ano");
+        System.out.println("Resultado acumulado: R$" + valorAcumulado);
+        InterfaceUtils.imprimeLinhaSeparadora();
+        InterfaceUtils.imprimeLinhaSeparadora();
+        System.out.println("(Pressione qualquer tecla para voltar para o menu...)");
+        scanner.nextLine();
+        exibeMenuInvestimentos();
     }
 
     public static void sair() {

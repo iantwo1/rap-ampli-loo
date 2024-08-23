@@ -6,11 +6,15 @@ package com.iancarvalho.gerenciaBanco2.utils;
  */
 public class InterfaceUtils {
 
+    public static void imprimeLinhaSeparadora() {
+        System.out.println("#".repeat(100));
+    }
+
     public static void imprimeCabecalho(String cabecalho) {
-        System.out.println("#".repeat(100));
-        System.out.println("*".repeat(100));
-        System.out.println("#".repeat(30) + "    "+cabecalho+"    " + "#".repeat(30));
-        System.out.println("*".repeat(100));
-        System.out.println("#".repeat(100));
+        imprimeLinhaSeparadora();
+        imprimeLinhaSeparadora();
+        System.out.println("#".repeat(30) + "    " + cabecalho + "    " + "#".repeat(30));
+        imprimeLinhaSeparadora();
+        imprimeLinhaSeparadora();
     }
 }
