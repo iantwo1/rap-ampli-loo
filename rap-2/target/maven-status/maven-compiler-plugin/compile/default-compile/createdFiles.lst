@@ -2,4 +2,3 @@ com\iancarvalho\gerenciaBanco\ContaBancaria.class
 com\iancarvalho\gerenciaBanco\utils\InterfaceUtils.class
 com\iancarvalho\gerenciaBanco\GerenciaBanco.class
 com\iancarvalho\gerenciaBanco\Pessoa.class
-com\iancarvalho\gerenciaBanco\utils\FormatacaoUtils.class

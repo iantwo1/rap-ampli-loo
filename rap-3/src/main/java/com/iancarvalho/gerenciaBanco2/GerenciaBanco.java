@@ -88,9 +88,6 @@ public class GerenciaBanco {
                 exibeMenuInvestimentos();
             case "x" ->
                 sair();
-            case "d" ->
-                sair();
-
         }
 
     }
@@ -184,7 +181,7 @@ public class GerenciaBanco {
             try {
                 valorDepositar = scanner.nextDouble();
             } catch (Exception err) {
-                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separacao de milhar e com vírgula para separar os decimais)!");
                 scanner.nextLine();
             }
             valorInvalido = valorDepositar <= 0;
@@ -214,7 +211,7 @@ public class GerenciaBanco {
             try {
                 valorRetirar = scanner.nextDouble();
             } catch (Exception err) {
-                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separacao de milhar e com vírgula para separar os decimais)!");
                 scanner.nextLine();
             }
             valorInvalido = valorRetirar <= 0 || valorRetirar > conta.getSaldo();
@@ -234,15 +231,15 @@ public class GerenciaBanco {
         System.out.println("(Dica: utilize virgulas para separar decimais)");
         double valorInvestir = 0;
         int quantidadeMeses = 0;
-        boolean valorInvalido;
+        boolean valorInvalido = true;
         do {
             System.out.print("Digite o valor a ser investido: ");
             try {
                 valorInvestir = scanner.nextDouble();
             } catch (Exception err) {
-                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separacao de milhar e com vírgula para separar os decimais)!");
                 scanner.nextLine();
-                break;
+                continue;
             }
             System.out.print("Digite a quantidade de meses: ");
             try {
@@ -250,7 +247,7 @@ public class GerenciaBanco {
             } catch (Exception err) {
                 System.out.println("Erro na digitacao! Verifique se esta no formato correto (valor inteiro sem decimais)!");
                 scanner.nextLine();
-                break;
+                continue;
             }
             valorInvalido = valorInvestir <= 0 || quantidadeMeses <= 0;
             if (valorInvalido) {
@@ -261,7 +258,7 @@ public class GerenciaBanco {
         double valorAcumulado = AplicacaoBancaria.calcularCDB(valorInvestir, quantidadeMeses);
         InterfaceUtils.imprimeLinhaSeparadora();
         InterfaceUtils.imprimeLinhaSeparadora();
-        System.out.println("Que otimo! Ja temos um resultado para sua simulação!");
+        System.out.println("Que otimo! Ja temos um resultado para sua simulacao!");
         System.out.println("Valor a investir: R$" + valorInvestir);
         System.out.println("Quantidade de meses: " + quantidadeMeses);
         System.out.println("Juros: 10% ao ano");
@@ -279,15 +276,15 @@ public class GerenciaBanco {
         System.out.println("(Dica: utilize virgulas para separar decimais)");
         double valorInvestir = 0;
         int quantidadeMeses = 0;
-        boolean valorInvalido;
+        boolean valorInvalido = true;
         do {
             System.out.print("Digite o valor a ser investido: ");
             try {
                 valorInvestir = scanner.nextDouble();
             } catch (Exception err) {
-                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem separação de milhar e com vírgula para separar os decimais)!");
+                System.out.println("Erro na digitacao! Verifique se esta no formato correto (sem seperacao de milhar e com vírgula para separar os decimais)!");
                 scanner.nextLine();
-                break;
+                continue;
             }
             System.out.print("Digite a quantidade de meses: ");
             try {
@@ -295,7 +292,7 @@ public class GerenciaBanco {
             } catch (Exception err) {
                 System.out.println("Erro na digitacao! Verifique se esta no formato correto (valor inteiro sem decimais)!");
                 scanner.nextLine();
-                break;
+                continue;
             }
             valorInvalido = valorInvestir <= 0 || quantidadeMeses <= 0;
             if (valorInvalido) {
@@ -306,7 +303,7 @@ public class GerenciaBanco {
         double valorAcumulado = AplicacaoBancaria.calcularLCI(valorInvestir, quantidadeMeses);
         InterfaceUtils.imprimeLinhaSeparadora();
         InterfaceUtils.imprimeLinhaSeparadora();
-        System.out.println("Que otimo! Ja temos um resultado para sua simulação!");
+        System.out.println("Que otimo! Ja temos um resultado para sua simulacao!");
         System.out.println("Valor a investir: R$" + valorInvestir);
         System.out.println("Quantidade de meses: " + quantidadeMeses);
         System.out.println("Juros: 8% ao ano");
